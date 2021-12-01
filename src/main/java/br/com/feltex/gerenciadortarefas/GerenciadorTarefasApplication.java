@@ -11,10 +11,10 @@ import org.springframework.context.annotation.Bean;
 import java.time.Instant;
 
 @SpringBootApplication
-public class TodoListApplication {
+public class GerenciadorTarefasApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(TodoListApplication.class, args);
+        SpringApplication.run(GerenciadorTarefasApplication.class, args);
     }
 
 

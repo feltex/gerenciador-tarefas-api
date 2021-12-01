@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 import java.util.Comparator;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -25,8 +24,11 @@ public class TarefaController {
 
     @GetMapping
     public ResponseEntity<?> listar() {
-        var lista = lerTarefas();
-        return ResponseEntity.status(HttpStatus.CREATED).body(lista);
+        var lista = tarefaRepository.findAll()
+                .stream()
+                .map(t -> new TarefaDto(t.getId(), t.getNome(), t.isConcluida()))
+                .collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.OK).body(lista);
     }
 
     @PostMapping
@@ -46,13 +48,6 @@ public class TarefaController {
         tarefa.setConcluida(!tarefa.isConcluida());
         tarefa.setUltimaAtualizacao(Instant.now());
         tarefaRepository.save(tarefa);
-    }
-
-    private List<TarefaDto> lerTarefas() {
-        return tarefaRepository.findAll()
-                .stream()
-                .map(t -> new TarefaDto(t.getId(), t.getNome(), t.isConcluida()))
-                .collect(Collectors.toList());
     }
 
     private int gerarId() {
